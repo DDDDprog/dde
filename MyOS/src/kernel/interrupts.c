@@ -1,6 +1,8 @@
 #include "interrupts.h"
 #include "kernel.h"
 #include "vga.h"
+#include "timer.h"
+#include "keyboard.h"
 
 /* IDT and interrupt handlers */
 static struct idt_entry idt[IDT_SIZE];
@@ -154,8 +156,19 @@ void isr_handler(uint32_t interrupt_number, uint32_t error_code) {
 void irq_handler(uint32_t irq_number, uint32_t error_code) {
     (void)error_code; /* Unused parameter */
     
-    if (interrupt_handlers[irq_number]) {
-        interrupt_handlers[irq_number]();
+    /* Handle specific IRQs */
+    switch (irq_number) {
+        case 32: /* Timer IRQ0 */
+            timer_handler();
+            break;
+        case 33: /* Keyboard IRQ1 */
+            keyboard_handler();
+            break;
+        default:
+            if (interrupt_handlers[irq_number]) {
+                interrupt_handlers[irq_number]();
+            }
+            break;
     }
     
     /* Send EOI to PIC */

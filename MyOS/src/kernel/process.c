@@ -1,7 +1,6 @@
 #include "process.h"
 #include "kernel.h"
 #include "vga.h"
-#include "string.h"
 
 static process_t processes[MAX_PROCESSES];
 static process_t* current_process = NULL;
@@ -252,9 +251,3 @@ uint32_t syscall_handler(uint32_t syscall_num, uint32_t arg1, uint32_t arg2, uin
     }
 }
 
-/* Idle process - runs when no other processes are ready */
-void idle_process(void) {
-    while (1) {
-        __asm__ volatile ("hlt"); /* Halt until next interrupt */
-    }
-}

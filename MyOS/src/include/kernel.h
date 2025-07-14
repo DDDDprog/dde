@@ -22,6 +22,7 @@ struct multiboot_info;
 /* Function prototypes */
 void kernel_main(uint32_t magic, struct multiboot_info* mboot);
 void kernel_panic(const char* message);
+void idle_process(void);
 
 /* Memory management */
 void* kmalloc(size_t size);
@@ -30,6 +31,8 @@ void kfree(void* ptr);
 /* String functions */
 size_t strlen(const char* str);
 char* strcpy(char* dest, const char* src);
+char* strncpy(char* dest, const char* src, size_t n);
+char* strcat(char* dest, const char* src);
 int strcmp(const char* str1, const char* str2);
 void* memset(void* ptr, int value, size_t size);
 void* memcpy(void* dest, const void* src, size_t size);
